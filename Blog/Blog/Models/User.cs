@@ -1,7 +1,13 @@
-﻿namespace Blog.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+
+namespace Blog.Models
 {
+    [Table("User")]
     public class User
     {
+        [Key] // chave primária
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)] // Informa que a chave é direta no banco
         public int Id { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }

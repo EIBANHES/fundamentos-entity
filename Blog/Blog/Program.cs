@@ -6,41 +6,66 @@ class Program
 {
     static void Main(string[] args)
     {
-        using (var context = new BlogDataContext())
-        {
-            //var tag = new Tag { Name = "test", Slug = "slug" };
+        using var context = new BlogDataContext();
 
-            //context.Tags.Add(tag);
-            // Salva no banco
-            //context.SaveChanges();
+        //var user = new User
+        //{
+        //    Name = "André Baltieri",
+        //    Slug = "andrebaltieri",
+        //    Email = "andre@balta.io",
+        //    Bio = "9x Microsoft MVP",
+        //    Image = "https://balta.io",
+        //    PasswordHash = "1234567"
+        //};
 
-            //var tag = context.Tags.FirstOrDefault(x => x.Id == 1);
-            //tag.Name = "Oi";
-            //tag.Slug = "Emanuel";
-            //context.Update(tag);
-            //context.SaveChanges();
-            //Nunca com AsNoTracking
-            //var tag = context
-            //    .Tags
-            //    .FirstOrDefault(x => x.Id == 2);
-            //tag.Name = "Oi";
-            //tag.Slug = "Emanuel";
-            //context.Remove(tag);
-            //context.SaveChanges();
+        //var category = new Category
+        //{
+        //    Name = "Backend",
+        //    Slug = "backend"
+        //};
 
-            //AsNoTracking -> importante para performance
-            //var tags = context.Tags.AsNoTracking().ToList(); //ToList() sempre no final da query
+        ////Scope_identity
+        //var post = new Post
+        //{
+        //    Author = user,
+        //    Category = category,
+        //    Body = "<p>Olá mundo</p>",
+        //    Slug = "comecando-com-ef-core",
+        //    Summary = "Neste artigo vamos aprender EF Core",
+        //    Title = "Começando com EF core",
+        //    CreateDate = DateTime.Now,
+        //    LastUpdateDate = DateTime.Now,
+        //};
 
-            //foreach (var tag in tags)
-            //{
-            //    Console.WriteLine(tag.Name);
-            //}
+        //context.Posts.Add(post);
+        //context.SaveChanges();
 
-            var tag = context
-                .Tags
-                .AsNoTracking()
-                .FirstOrDefault(x => x.Id == 2);
-            Console.WriteLine(tag?.Name);
-        }
+        //var posts = context
+        //    .Posts
+        //    .AsNoTracking()
+        //    .Include(x => x.Author) // Inclui o author na query, inner join
+        //    .Include(x => x.Category) // Inclui o author na query, inner join
+        //    /*.Where(x => x.AuthorId == 1)*/ // aqui ele nao faz inner join => Author.Id (aqui faz o join)
+        //    .OrderByDescending(x => x.LastUpdateDate)
+        //    .ToList();
+
+        //foreach (var post in posts)
+        //{
+        //    Console.WriteLine($"{post.Title} escrito por {post.Author?.Name} em {post.Category?.Name}");
+        //}
+
+        var posts = context
+            .Posts
+            //.AsNoTracking()
+            .Include(x => x.Author) // Inclui o author na query, inner join
+            .Include(x => x.Category) // Inclui o author na query, inner join
+            /*.Where(x => x.AuthorId == 1)*/ // aqui ele nao faz inner join => Author.Id (aqui faz o join)
+            .OrderByDescending(x => x.LastUpdateDate)
+            .FirstOrDefault();
+
+        posts.Author.Name = "Emanuel";
+        context.Posts.Update(posts);
+        context.SaveChanges();
+
     }
 }
