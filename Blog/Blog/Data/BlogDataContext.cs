@@ -3,13 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Blog.Data
 {
-    // mapeamento de entidades
+    // mapeamento de entidades -> fluent mapping
     public class BlogDataContext : DbContext
     {
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<Post> Posts { get; set; }
-        public DbSet<User> Users { get; set; }
-
         //conexão com o banco
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
