@@ -7,4 +7,4 @@ class Program
     {
         using var context = new BlogDataContext();
     }
-}
+} 
